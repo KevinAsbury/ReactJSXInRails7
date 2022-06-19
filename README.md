@@ -1,24 +1,166 @@
-# README
+# Rails 7 with React JSX Components
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A simple HelloWorld component. Visit the `/helloworld` api route and if you see a hello from Rails as well as a hello from Reactjs then it is working.
 
-Things you may want to cover:
+* Ruby version: 3.1.1
 
-* Ruby version
+* System dependencies:
+  - Node v16
+  - Ruby v3
+  - Postgresql databse v14
 
-* System dependencies
-
-* Configuration
+* Configuration: 
+Run `npm i` and then `npm run build` to build the Javascript files.
 
 * Database creation
+/I didn't use the database for anything in this example but I added a PG database to use this project as one of my templates./
+Run `rails db:create`
 
 * Database initialization
+Run `rails db:migrate`
 
-* How to run the test suite
+* Manual Setup
+```shell
+gem add react-rails
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+`package.json`
+```json
+  "dependencies": {
+    "@hotwired/stimulus": "^3.0.1",
+    "@hotwired/turbo-rails": "^7.1.3",
+    "esbuild": "^0.14.46",
+    "esbuild-plugin-import-glob": "^0.1.1",
+    "esbuild-rails": "^1.0.3",
+    "react": "^17.0.2",
+    "react_ujs": "^2.6.1",
+    "react-dom": "^17.0.2"
+  },
+  "scripts": {
+    "build": "./esbuild.config.js",
+    "watch": "./esbuild.config.js --watch"
+  }
+```
 
-* Deployment instructions
+```shell
+npm i
+```
 
-* ...
+Be sure to set `#!/usr/local/bin/node` below to the path of your node install.
+You can find it with `which node`
+
+`esbuild.config.js`
+```javascript
+#!/usr/local/bin/node
+const path = require('path');
+const rails = require('esbuild-rails');
+const ImportGlobPlugin = require('esbuild-plugin-import-glob').default;
+
+require('esbuild')
+  .build({
+    entryPoints: ['application.js'],
+    bundle: true,
+    sourcemap: true,
+    watch: process.argv.includes('--watch'),
+    outdir: path.join(process.cwd(), 'app/assets/builds'),
+    absWorkingDir: path.join(process.cwd(), 'app/javascript'),
+    loader: { '.js': 'jsx' },
+    publicPath: 'assets',
+    plugins: [rails(), ImportGlobPlugin()],
+  })
+  .catch(() => process.exit(1));
+```
+
+```shell
+rails g controller helloworld
+```
+
+`app/controllers/helloworld_controller.rb`
+```ruby
+class HelloworldController < ApplicationController
+  def index
+  end
+end
+```
+
+```shell
+touch app/view/helloworld/index.html.erb
+```
+
+`app/view/helloworld/index.html.erb`
+```html
+<h1>Hello World from Rails!</h1>
+<%= react_component("HelloWorld") %>
+```
+
+```shell
+mkdir app/javascript/components
+touch app/javascript/components/HelloWorld.jsx
+touch app/javascript/components/index.js
+```
+
+`app/javascript/components/HelloWorld.jsx`
+```jsx
+import React from 'react';
+
+export default function HelloWorld() {
+  return <h1>Hello World from Reactjs!</h1>;
+}
+```
+
+`app/javascript/components/index.js`
+```javascript
+import components from './**/*.jsx';
+
+let componentsContext = {};
+components.forEach(component => {
+  componentsContext[component.name.replace('.jsx', '').replace(/--/g, '/')] =
+    component.module.default;
+});
+
+const ReactRailsUJS = require('react_ujs');
+
+ReactRailsUJS.getConstructor = name => {
+  return componentsContext[name];
+};
+ReactRailsUJS.handleEvent('turbo:load', ReactRailsUJS.handleMount, false);
+ReactRailsUJS.handleEvent('turbo:frame-load', ReactRailsUJS.handleMount, false);
+ReactRailsUJS.handleEvent(
+  'turbo:before-render',
+  ReactRailsUJS.handleUnmount,
+  false
+);
+```
+
+`app/javascript/application.js`
+```javascript
+// Entry point for the build script in your package.json
+import '@hotwired/turbo-rails';
+import './controllers';
+import './components';
+```
+
+`config/routes.rb`
+```ruby
+Rails.application.routes.draw do
+  get 'helloworld', to: 'helloworld#index'
+end
+```
+
+`config/database.yml`
+```yaml
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: <YOUR DB HOST HERE>
+  port: <YOUR DB PORT HERE>
+  username: <YOUR DB USER HERE>
+  password: <YOUR DB PASSWORD HERE>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: reactrails_development
+```
+
+That's it! Enjoy!

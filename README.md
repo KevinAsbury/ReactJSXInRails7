@@ -13,25 +13,24 @@ A simple HelloWorld component. Visit the `/helloworld` api route and if you see 
 Run `npm i` and then `npm run build` to build the Javascript files.
 
 ## Database creation
-I didn't use the database for anything in this example but I added a PG database to use this project as one of my templates.
+Start your `postgres` database
+Edit `config/database.yml` and add your host, port, username, and password.
 Run `rails db:create`
 
 ## Database initialization
 Run `rails db:migrate`
 
 ## Manual Setup
-If you's rather follow my steps and create your own app here are the steps below.
+If you are just curious how to setup your own Rails 7 app with React JSX components and don't want to clone this repo then follow my actions below.
 
 ```shell
 rails new myapp --javascript=esbuild --databse=postgresql
 cd myapp
 gem add react-rails
-bundle
 bundle install
-npm i
 ```
 
-`package.json (snippet)`
+`package.json` (insert the snippet below)
 ```json
   "dependencies": {
     "@hotwired/stimulus": "^3.0.1",
@@ -51,6 +50,7 @@ npm i
 
 ```shell
 npm i
+touch esbuild.config.js
 ```
 
 Be sure to set `#!/usr/local/bin/node` below to the path of your node install.

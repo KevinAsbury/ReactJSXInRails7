@@ -23,6 +23,12 @@ Run `rails db:migrate`
 ## Start the app
 Run `rails s`
 
+## See the results
+Goto your browswer and navigate to `http://localhost:3000`
+Visit one of the example end points:
+  - `http://localhost:3000/helloworld`
+  - `http://localhost:3000/users/new`
+
 ---
 
 ## Manual Setup

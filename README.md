@@ -5,7 +5,7 @@ A simple HelloWorld component. Visit the `/helloworld` api route and if you see 
 ## Ruby version: `3.1.1`
 
 ## System dependencies
-  - Node v16
+  - Node v16+
   - Ruby v3
   - Postgresql databse v14
 
@@ -19,6 +19,11 @@ Run `rails db:create`
 
 ## Database initialization
 Run `rails db:migrate`
+
+## Start the app
+Run `rails s`
+
+---
 
 ## Manual Setup
 If you are just curious how to setup your own Rails 7 app with React JSX components and don't want to clone this repo then follow my actions below.

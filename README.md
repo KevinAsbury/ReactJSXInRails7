@@ -2,29 +2,36 @@
 
 A simple HelloWorld component. Visit the `/helloworld` api route and if you see a hello from Rails as well as a hello from Reactjs then it is working.
 
-* Ruby version: 3.1.1
+## Ruby version: `3.1.1`
 
-* System dependencies:
+## System dependencies
   - Node v16
   - Ruby v3
   - Postgresql databse v14
 
-* Configuration: 
+## Configuration
 Run `npm i` and then `npm run build` to build the Javascript files.
 
-* Database creation
-/I didn't use the database for anything in this example but I added a PG database to use this project as one of my templates./
+## Database creation
+I didn't use the database for anything in this example but I added a PG database to use this project as one of my templates.
 Run `rails db:create`
 
-* Database initialization
+## Database initialization
 Run `rails db:migrate`
 
-* Manual Setup
+## Manual Setup
+If you's rather follow my steps and create your own app here are the steps below.
+
 ```shell
+rails new myapp --javascript=esbuild --databse=postgresql
+cd myapp
 gem add react-rails
+bundle
+bundle install
+npm i
 ```
 
-`package.json`
+`package.json (snippet)`
 ```json
   "dependencies": {
     "@hotwired/stimulus": "^3.0.1",

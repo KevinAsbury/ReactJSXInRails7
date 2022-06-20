@@ -1,6 +1,13 @@
 # Rails 7 with React JSX Components
 
-A simple HelloWorld component. Visit the `/helloworld` api route and if you see a hello from Rails as well as a hello from Reactjs then it is working.
+This repo features React JSX code being used in Rails 7. My project goals were to get React JSX working in Rails, to make a fetch call and POST data back to Rails, to implement CSRF protection, and to implement a CSS style framework (TailwindCSS).
+
+## Features
+  - React JSX Hello World route with input box and submit at `http://localhost:3000/helloworld`
+  - React JSX New User creation at `http://localhost:3000/users/new`
+  - TailwindCSS
+  - Postgresql
+  - Rails 7
 
 ## Ruby version: `3.1.1`
 
@@ -11,9 +18,9 @@ A simple HelloWorld component. Visit the `/helloworld` api route and if you see 
 
 ## Configuration
 Run `npm i` and then `npm run build` to build the Javascript files.
+Run `rails tailwindcss:build` to build the CSS
 
 ## Database creation
-Start your `postgres` database
 Edit `config/database.yml` and add your host, port, username, and password.
 Run `rails db:create`
 
@@ -21,7 +28,10 @@ Run `rails db:create`
 Run `rails db:migrate`
 
 ## Start the app
+Start your `postgres` database
 Run `rails s`
+
+If you are developing run: `bin/dev` to initiate hot loading
 
 ## See the results
 Goto your browswer and navigate to `http://localhost:3000`
@@ -32,7 +42,7 @@ Visit one of the example end points:
 ---
 
 ## Manual Setup
-If you are just curious how to setup your own Rails 7 app with React JSX components and don't want to clone this repo then follow my actions below.
+If you are just curious how to setup your own Rails 7 app with React JSX components and don't want to clone this repo then follow my actions below. This is how I implemented the first steps of getting a Hello World route with JSX view working.
 
 ```shell
 rails new myapp --javascript=esbuild --databse=postgresql

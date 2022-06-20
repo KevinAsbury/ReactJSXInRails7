@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 
+import InputButtonRight from './ui/InputButtonRight';
+
 export default function HelloWorld(props) {
   [text, setText] = useState();
 
@@ -19,18 +21,21 @@ export default function HelloWorld(props) {
 
   return (
     <div>
-      <h1>Hello World!</h1>
       <form onSubmit={handleSubmit}>
-        <label>
-          Enter text:
-          <input
-            type="text"
-            name="name"
-            value={text}
-            onChange={e => setText(e.target.value)}
-          />
-        </label>
-        <input type="submit" value="Submit" />
+        <InputButtonRight
+          value={text}
+          label="Enter Some Text:"
+          onChange={e => setText(e.target.value)}
+          id="text"
+          name="text-input"
+          type="text"
+          placeholder="Enter Text"
+          autocomplete={null}
+          buttonOnClick={null}
+          buttonText={'Submit'}
+          buttonType="submit"
+          buttonValue="Submit"
+        />
       </form>
     </div>
   );

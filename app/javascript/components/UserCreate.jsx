@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 
+import Input from './ui/Input.jsx';
+import InputButtonLeft from './ui/InputButtonLeft.jsx';
+import InputButtonRight from './ui/InputButtonRight.jsx';
+
 export default function UserCreate() {
   const [showPassword, setShowPassword] = React.useState(false);
   const onShowPasswordClick = event => {
@@ -12,16 +16,14 @@ export default function UserCreate() {
     event.preventDefault();
     setShowPwConfirm(!showPwConfirm);
   };
-  const [email, setEmail] = useState('test@test.com');
-  const [password, setPassword] = useState('password');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('password');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [csrfToken, setCsrfToken] = useState('');
 
   useEffect(() => {
     const metaCsrfToken = document.querySelector('[name="csrf-token"]');
     setCsrfToken(metaCsrfToken?.getAttribute('content'));
-    setPassword('password');
-    setPasswordConfirmation('password');
   }, []);
 
   const onSubmitHandler = async event => {
@@ -76,40 +78,49 @@ export default function UserCreate() {
   return (
     <div>
       <form onSubmit={onSubmitHandler}>
-        <div>
-          <label>Email:</label>
-          <input
-            value={email}
-            type="text"
-            onChange={e => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <input name="csrfToken" value={csrfToken} type="hidden" />
-          <label>Password:</label>
-          <input
-            onChange={e => setPassword(e.target.value)}
-            value={password}
-            type={showPassword ? 'text' : 'password'}
-          />
-          <button onClick={onShowPasswordClick}>
-            {showPassword ? 'Hide' : 'Show'}
+        <Input
+          value={email}
+          label="Email:"
+          onChange={e => setEmail(e.target.value)}
+          id="email"
+          name="email-input"
+          type="text"
+          placeholder="Email Address"
+          autocomplete="email-address"
+        />
+        <InputButtonLeft
+          value={password}
+          label="Password:"
+          onChange={e => setPassword(e.target.value)}
+          id="password"
+          name="password-input"
+          type={showPassword ? 'text' : 'password'}
+          placeholder="Password"
+          autocomplete={null}
+          buttonOnClick={onShowPasswordClick}
+          buttonText={showPassword ? 'Hide' : 'Show'}
+        />
+        <InputButtonRight
+          value={passwordConfirmation}
+          label="Password Confirmation:"
+          onChange={e => setPasswordConfirmation(e.target.value)}
+          id="password-confirmation"
+          name="password-confirmation-input"
+          type={showPwConfirm ? 'text' : 'password'}
+          placeholder="Password Confirmation"
+          autocomplete={null}
+          buttonOnClick={onShowPwConfirmClick}
+          buttonText={showPwConfirm ? 'Hide' : 'Show'}
+        />
+        <div className="text-right">
+          <button
+            type="submit"
+            value="Submit"
+            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Save
           </button>
         </div>
-        <div>
-          <label>Confirm Password:</label>
-          <input
-            onChange={e => setPasswordConfirmation(e.target.value)}
-            value={passwordConfirmation}
-            type={showPwConfirm ? 'text' : 'password'}
-          />
-          <button onClick={onShowPwConfirmClick}>
-            {showPwConfirm ? 'Hide' : 'Show'}
-          </button>
-        </div>
-        <button type="submit" value="Submit">
-          Submit
-        </button>
       </form>
     </div>
   );
